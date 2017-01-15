@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGridBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingTop="4dp"
+        android:transitionName="actionBar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/relLayoutForTransition"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:transitionName="transitionLayout"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/plusSign"
+            android:text="+"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+
+       <RelativeLayout
+           android:layout_width="85dp"
+           android:paddingTop="16dp"
+           android:paddingBottom="16dp"
+           android:id="@+id/leftLayout"
+           android:layout_height="wrap_content"
+           android:layout_toLeftOf="@id/plusSign"
+           android:layout_centerVertical="true"
+           android:layout_alignParentTop="true"
+           android:layout_marginRight="20dp"
+           android:layout_marginEnd="20dp"
+           >
+
+           <com.makeramen.roundedimageview.RoundedImageView
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:layout_width="80dp"
+               android:layout_height="80dp"
+               android:src="@drawable/circular_avatar"
+               android:id="@+id/leftHoroscopeImageView"
+               app:riv_oval="true"
+               app:riv_corner_radius="5dip"
+               app:riv_border_width="2dip"
+               app:riv_border_color="#333333"
+            />
+
+           <com.makeramen.roundedimageview.RoundedImageView
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:src="@drawable/female"
+               android:layout_alignParentRight="true"
+               android:background="@android:color/white"
+               app:riv_oval="true"
+               app:riv_corner_radius="5dip"
+               app:riv_border_width="2dip"
+               app:riv_border_color="#333333"
+               app:riv_mutate_background="true"
+               android:id="@+id/genderLeftImageView"
+               />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Aries"
+               android:textSize="14sp"
+               android:textColor="@android:color/black"
+               android:id="@+id/leftHoroscopeTextView"
+               android:layout_marginTop="5dp"
+               android:layout_gravity="center"
+               android:layout_below="@id/leftHoroscopeImageView"
+               android:layout_centerHorizontal="true"
+               />
+       </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="85dp"
+            android:id="@+id/rightLayout"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/plusSign"
+            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            >
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/circular_avatar"
+                android:id="@+id/rightHoroscopeImageView"
+                app:riv_oval="true"
+                app:riv_corner_radius="5dip"
+                app:riv_border_width="2dip"
+                app:riv_border_color="#333333"
+                />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/male"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/white"
+                app:riv_oval="true"
+                app:riv_corner_radius="5dip"
+                app:riv_border_width="2dip"
+                app:riv_border_color="#333333"
+                app:riv_mutate_background="true"
+                android:id="@+id/genderRightImageView"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aries"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/rightHoroscopeTextView"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_below="@id/rightHoroscopeImageView"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+        <RadioGroup
+            android:checkedButton="@+id/offer"
+            android:id="@+id/toggle"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/pink_out_line"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:id="@+id/manRB"
+                android:background="@drawable/toggle_widget_background"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="Man"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:id="@+id/womanRB"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_widget_background"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:text="Woman"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="16dp"
+            android:id="@+id/compatTextView"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:background="@android:color/black"
+            android:text="View Compatability -->"
+            android:visibility="gone"
+            >
+        </TextView>
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/toggle"
+        android:id="@+id/grid_view"
+        android:layout_width="wrap_content"
+        android:listSelector="@color/colorItemGridSelector"
+        android:layout_height="wrap_content"
+        android:verticalSpacing="1dp"
+        android:foregroundGravity="center"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:layout_above="@id/compatTextView"
+        >
+    </GridView>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

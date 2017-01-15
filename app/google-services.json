@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "639385032820",
+    "firebase_url": "https://kundeliktizhuldyzzhoramal.firebaseio.com",
+    "project_id": "kundeliktizhuldyzzhoramal",
+    "storage_bucket": "kundeliktizhuldyzzhoramal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639385032820:android:80cc628400f4136a",
+        "android_client_info": {
+          "package_name": "kz.sekeww.www.kundeliktizhuldyzzhoramaly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639385032820-ahnambf013qn92kl2e2nd9sb8k8lofge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa5B629kz16ltHrM5znYqc_SSr-yb7uW8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

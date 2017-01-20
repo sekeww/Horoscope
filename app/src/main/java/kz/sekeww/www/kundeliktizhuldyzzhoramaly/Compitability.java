@@ -1,14 +1,9 @@
 package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +30,6 @@ public class Compitability extends AppCompatActivity {
     private ImageView genderRightImageView;
     private RelativeLayout leftLayout;
     private RelativeLayout rightLayout;
-    private RelativeLayout relLayoutForTransition;
     private GridView grid_view;
     private TextView leftHoroscopeTextView;
     private TextView rightHoroscopeTextView;
@@ -56,7 +50,6 @@ public class Compitability extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.compitability);
-        setupWindowAnimations();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,8 +58,6 @@ public class Compitability extends AppCompatActivity {
 
         isLeftClicked = true;
         isFemale = true;
-
-        relLayoutForTransition = (RelativeLayout) findViewById(R.id.relLayoutForTransition);
 
         manRB = (RadioButton) findViewById(R.id.manRB);
         manRB.setOnClickListener(radioButtonClickListener);
@@ -121,7 +112,6 @@ public class Compitability extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
 
                 // TODO Auto-generated method stub
                 String slecteditemText = itemname[+position];
@@ -187,13 +177,13 @@ public class Compitability extends AppCompatActivity {
 
                 Intent intent = new Intent(Compitability.this, CompAbout.class);
 
-                View sharedView = relLayoutForTransition;
-                String transitionName = "transitionLayout";
+                intent.putExtra("leftImPos",leftImagePos)
+                        .putExtra("rightImPos",rightImagePos)
+                        .putExtra("leftGenIm",(Integer) genderLeftImageView.getTag())
+                        .putExtra("leftText",leftHoroscopeTextView.getText())
+                        .putExtra("rightText",rightHoroscopeTextView.getText());
 
-                intent.putExtra("leftImPos",leftImagePos).putExtra("rightImPos",rightImagePos);
-
-                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(Compitability.this, sharedView, transitionName);
-                startActivity(intent, transitionActivityOptions.toBundle());
+                startActivity(intent);
                 finish();
             }
         });
@@ -290,14 +280,4 @@ public class Compitability extends AppCompatActivity {
             }
         }
     };
-
-    private void setupWindowAnimations() {
-        Fade fade = new Fade();
-        fade.setDuration(1000);
-        getWindow().setEnterTransition(fade);
-
-        Slide slide = new Slide();
-        slide.setDuration(1000);
-        getWindow().setReturnTransition(slide);
-    }
 }

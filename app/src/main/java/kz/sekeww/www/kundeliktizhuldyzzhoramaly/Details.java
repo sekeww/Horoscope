@@ -25,11 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +35,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Daily;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Tomorrow;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Weekly;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Year;
 
 public class  Details extends AppCompatActivity {
 
@@ -64,32 +67,24 @@ public class  Details extends AppCompatActivity {
 
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
-        MobileAds.initialize(getApplicationContext(),getResources().getString(R.string.ads_app_id));
 
         AdView mAdView = (AdView) findViewById(R.id.adView);
-        final AdRequest adRequest = new AdRequest.Builder().addTestDevice("27B1B3B72C8B485FEA61CFA654562346").build();
+        final AdRequest adRequest = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
         mAdView.loadAd(adRequest);
 
-        interstitial = new InterstitialAd(getApplicationContext());
-        interstitial.setAdUnitId(getResources().getString(R.string.ads_interstitialBanner_id));
-
-
-        // Begin loading your interstitial.
-        requestNewInterstitial();   // если закоментировать, то утечки не будет
-
-        interstitial.setAdListener(new AdListener() {
-
-            public void onAdLoaded() {
-                displayInterstitial();
-            }
-
-            private void displayInterstitial() {
-                if (interstitial.isLoaded()) {
-                    interstitial.show();
-                }
-            }
-        });
-
+//        interstitial = new InterstitialAd(getApplicationContext());
+//        interstitial.setAdUnitId(getResources().getString(R.string.ads_interstitialBanner_id));
+//
+//        interstitial.setAdListener(new AdListener() {
+//
+//            @Override
+//            public void onAdClosed() {
+//                requestNewInterstitial();
+////                onPeopleClick(thePosition);
+//            }
+//        });
+//
+//        requestNewInterstitial();
         Intent intent = getIntent();
         //получаем строку и формируем имя ресурса
         resName = intent.getIntExtra("head", 0);
@@ -119,7 +114,9 @@ public class  Details extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (position == 1 && k==0){
                     k = k+1;
-                    requestNewInterstitial();
+//                    if (interstitial.isLoaded()) {
+//                        interstitial.show();
+//                    }
                 }
             }
 
@@ -225,7 +222,7 @@ public class  Details extends AppCompatActivity {
     }
 
     private void requestNewInterstitial() {
-        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("27B1B3B72C8B485FEA61CFA654562346").build();
+        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("27B1B3B72C8B485FEA61CFA654562346").addTestDevice("992DA0E660174CC5796809D2A5F04696").build();
         interstitial.loadAd(adRequest1);
     }
 
@@ -250,6 +247,5 @@ public class  Details extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 }

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.adapters.CompatListAdapter;
+
 import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.imgid;
 import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.itemname;
 

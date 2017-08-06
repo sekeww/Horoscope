@@ -1,4 +1,4 @@
-package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
+package kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 
 /**
  * Created by Askhat on 4/12/2016.

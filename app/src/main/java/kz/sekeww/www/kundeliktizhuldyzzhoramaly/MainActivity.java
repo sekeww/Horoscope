@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -22,14 +27,20 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.adapters.CustomListAdapter;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     GridView grid_view;
 
     private LinearLayout gridsLineaLayout;
     private LinearLayout aboutLinearLayout;
     private Drawer.Result drawerResult = null;
+
+    private InterstitialAd interstitial;
+    private int thePosition;
 
     public static String[] itemname ={
             "Тоқты",
@@ -67,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        MobileAds.initialize(getApplicationContext(),getResources().getString(R.string.ads_app_id));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -112,23 +125,49 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
+                    thePosition = position;
+                    if (interstitial.isLoaded()) {
+                        interstitial.show();
+                    } else {
+                        Log.d(TAG, "The interstitial wasn't loaded yet.");
+                        onGridItemClick(position);
+                    }
 
-
-                    // TODO Auto-generated method stub
-                    String Slecteditem = itemname[+position];
-//                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, Details.class);
-
-                    intent.putExtra("head", position);
-
-                    //запускаем вторую активность
-                    startActivity(intent);
                 }
             });
+
+        interstitial = new InterstitialAd(getApplicationContext());
+        interstitial.setAdUnitId(getResources().getString(R.string.ads_interstitialBanner_id));
+        requestNewInterstitial();
+
+        interstitial.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                requestNewInterstitial();
+                onGridItemClick(thePosition);
+            }
+
+        });
         }
 
+    private void onGridItemClick(int position){
+        String Slecteditem = itemname[+position];
+//                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, Details.class);
+
+        intent.putExtra("head", position);
+
+        //запускаем вторую активность
+        startActivity(intent);
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        interstitial.loadAd(adRequest1);
+    }
 
     @Override
     public void onBackPressed(){

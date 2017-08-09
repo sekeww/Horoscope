@@ -79,7 +79,7 @@ public class Year extends Fragment {
 
         titleTextView.setText(zname);
         descriptionTextView.setText(zodiakDescriptionYear);
-        dateTextView.setText(formattedDate+"жылы");
+        dateTextView.setText(formattedDate + " жылы");
 
         return v;
     }

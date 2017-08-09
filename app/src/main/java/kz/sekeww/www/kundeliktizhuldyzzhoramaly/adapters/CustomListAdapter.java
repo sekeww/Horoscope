@@ -40,4 +40,5 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         return rowView;
 
     };
+
 }

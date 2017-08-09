@@ -3,6 +3,7 @@ package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +53,15 @@ public class  Details extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FloatingActionButton mFloatingActionButton;
     public int resName;
     private String zodiakName;
     private String zodiakDescriptionToday;
     private String zodiakDescriptionTomorrow;
     private String zodiakDescriptionWeek;
     private String zodiakDescriptionYear;
+    private ViewPagerAdapter adapter;
+    private int mPage;
 
     private RelativeLayout relativeLayout;
 
@@ -67,10 +72,11 @@ public class  Details extends AppCompatActivity {
 
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
-
         AdView mAdView = (AdView) findViewById(R.id.adView);
         final AdRequest adRequest = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
         mAdView.loadAd(adRequest);
+
+
 
 //        interstitial = new InterstitialAd(getApplicationContext());
 //        interstitial.setAdUnitId(getResources().getString(R.string.ads_interstitialBanner_id));
@@ -100,8 +106,15 @@ public class  Details extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFABClick();
+            }
+        });
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
@@ -112,6 +125,7 @@ public class  Details extends AppCompatActivity {
             // optional
             @Override
             public void onPageSelected(int position) {
+                mPage = position;
                 if (position == 1 && k==0){
                     k = k+1;
 //                    if (interstitial.isLoaded()) {
@@ -178,8 +192,22 @@ public class  Details extends AppCompatActivity {
 
     }
 
+    private void onFABClick() {
+
+        View view = adapter.getItem(mPage).getView();
+        TextView text = (TextView) view.findViewById(R.id.textDesc);
+        TextView date = (TextView) view.findViewById(R.id.dateTextView);
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text.getText() + "\n\n" + date.getText() + "\n@" +
+                getString(R.string.app_name) + "\n\n" + "https://play.google.com/store/apps/details?id=kz.sekeww.www.kundeliktizhuldyzzhoramaly");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         Log.d("my_log_inviewPager","zodiak name is "+zodiakName);
 
         adapter.addFragment(new Daily().newInstance(zodiakName,zodiakDescriptionToday), "Бүгінгі");

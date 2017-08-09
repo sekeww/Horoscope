@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     .withHeader(R.layout.drawer_header)
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(2),
-                            new PrimaryDrawerItem().withName(R.string.drawer_item_compatibility).withIcon(FontAwesome.Icon.faw_arrow_right).withIdentifier(3),
+                            new PrimaryDrawerItem().withName(R.string.drawer_item_compatibility).withIcon(FontAwesome.Icon.faw_arrow_right).setEnabled(false).withIdentifier(3),
                             new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_cog).withIdentifier(1),
                             new SecondaryDrawerItem().withName(R.string.drawer_item_rate).withIcon(FontAwesome.Icon.faw_youtube_play).withIdentifier(70),
                             new SectionDrawerItem().withName(R.string.drawer_item_info),
@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     else if (drawerItem.getIdentifier() == 70) {
                         // Rate App
                         try {
+
                             Intent int_rate = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + activity.getApplicationContext().getPackageName()));
                             int_rate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.getApplicationContext().startActivity(int_rate);

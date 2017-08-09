@@ -3,7 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Баптау</string>
-    <string name="app_version">© 2016  Версия 5.0</string>
+    <string name="app_version">© 2017  Версия 7.0</string>
+
 
     <string name="ads_app_id">ca-app-pub-3641402840999818~2478934289</string>
     <string name="ads_btmbanner_id">ca-app-pub-3641402840999818/3955667481</string>
@@ -13,7 +14,7 @@
     <string name="drawer_item_info2">уақыт аралығында жаңарып тұрады.</string>
     <string name="drawer_item_help">Көмек</string>
     <string name="drawer_item_home">Зодиак белгілері</string>
-    <string name="drawer_item_compatibility">Жарасымдылық (жуырда)</string>
+    <string name="drawer_item_compatibility">Жарасымдылық (Тамызда)</string>
     <string name="drawer_item_rate">Бізді бағалаңыз</string>
 
     <!-- TODO: Remove or change this placeholder text -->

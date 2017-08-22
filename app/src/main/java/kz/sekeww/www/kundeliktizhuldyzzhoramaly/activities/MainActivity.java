@@ -1,4 +1,4 @@
-package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
+package kz.sekeww.www.kundeliktizhuldyzzhoramaly.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,11 +22,13 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.adapters.CustomListAdapter;
 
 
@@ -91,11 +93,10 @@ public class MainActivity extends AppCompatActivity {
                     .withHeader(R.layout.drawer_header)
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(2),
-                            new PrimaryDrawerItem().withName(R.string.drawer_item_compatibility).withIcon(FontAwesome.Icon.faw_arrow_right).setEnabled(false).withIdentifier(3),
+                            new PrimaryDrawerItem().withName(R.string.drawer_item_compatibility).withIcon(FontAwesome.Icon.faw_heart).setEnabled(true).withIdentifier(3),
+                            new DividerDrawerItem(),
                             new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_cog).withIdentifier(1),
-                            new SecondaryDrawerItem().withName(R.string.drawer_item_rate).withIcon(FontAwesome.Icon.faw_youtube_play).withIdentifier(70),
-                            new SectionDrawerItem().withName(R.string.drawer_item_info),
-                            new SectionDrawerItem().withName(R.string.drawer_item_info2).setDivider(false)
+                            new SecondaryDrawerItem().withName(R.string.drawer_item_rate).withIcon(FontAwesome.Icon.faw_youtube_play).withIdentifier(70)
                     ).withOnDrawerItemClickListener(handlerOnClick(drawerResult,MainActivity.this))
                     .withOnDrawerListener(new Drawer.OnDrawerListener() {
                         @Override
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, Details.class);
+        intent.setClass(MainActivity.this, DetailsActivity.class);
 
         intent.putExtra("head", position);
 
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 //                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new Fragment1()).commit();
                     }
                     else if (drawerItem.getIdentifier() == 3) {
-                        intent = new Intent(MainActivity.this, Compitability.class);
+                        intent = new Intent(MainActivity.this, CompChooseActivity.class);
                     }
                     else if (drawerItem.getIdentifier() == 70) {
                         // Rate App

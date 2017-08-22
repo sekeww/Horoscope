@@ -1,4 +1,4 @@
-package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
+package kz.sekeww.www.kundeliktizhuldyzzhoramaly.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,12 +38,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Daily;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Tomorrow;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Weekly;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Year;
 
-public class  Details extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
 
     public static String LOG_TAG = "my_log";
     int k = 0;

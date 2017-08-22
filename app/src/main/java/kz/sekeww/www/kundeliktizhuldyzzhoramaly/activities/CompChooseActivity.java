@@ -1,4 +1,4 @@
-package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
+package kz.sekeww.www.kundeliktizhuldyzzhoramaly.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,18 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.adapters.CompatListAdapter;
-
-import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.imgid;
-import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.itemname;
 
 /**
  * Created by Askhat on 12/23/2016.
  */
-public class Compitability extends AppCompatActivity {
+public class CompChooseActivity extends AppCompatActivity {
 
+    private static final String TAG = CompChooseActivity.class.getSimpleName();
     private RadioButton manRB;
     private RadioButton womanRB;
     private ImageView genderLeftImageView;
@@ -47,16 +49,33 @@ public class Compitability extends AppCompatActivity {
     public Integer rightImagePos;
     public Integer leftImagePos;
 
+    private Toolbar toolbar;
+
+    private InterstitialAd interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.compitability);
+        setContentView(R.layout.activity_comp_choose);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Жарасымдылық");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Compatibility");
+
+        interstitial = new InterstitialAd(getApplicationContext());
+        interstitial.setAdUnitId(getResources().getString(R.string.ads_interstitialBanner_id));
+        requestNewInterstitial();
+
+        interstitial.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                requestNewInterstitial();
+                onViewCompatButtonClick();
+            }
+
+        });
 
         isLeftClicked = true;
         isFemale = true;
@@ -88,7 +107,7 @@ public class Compitability extends AppCompatActivity {
         leftLayout.setScaleY((float) 1.2);
         rightLayout.setScaleX((float) 0.833333);
         rightLayout.setScaleY((float) 0.833333);
-        rightHoroscopeImageView.setAlpha((float) 0.7);
+        rightHoroscopeImageView.setAlpha((float) 0.5);
 
         leftLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +123,7 @@ public class Compitability extends AppCompatActivity {
             }
         });
 
-        CompatListAdapter adapter=new CompatListAdapter(this, itemname, imgid);
+        CompatListAdapter adapter=new CompatListAdapter(this, MainActivity.itemname, MainActivity.imgid);
         grid_view=(GridView) findViewById(R.id.grid_view);
         grid_view.setTextFilterEnabled(true);
         grid_view.setAdapter(adapter);
@@ -116,10 +135,10 @@ public class Compitability extends AppCompatActivity {
                                     int position, long id) {
 
                 // TODO Auto-generated method stub
-                String slecteditemText = itemname[+position];
+                String slecteditemText = MainActivity.itemname[+position];
                 //Toast.makeText(getApplicationContext(), slecteditemText, Toast.LENGTH_SHORT).show();
 
-                Integer slecteditemImage = imgid[+position];
+                Integer slecteditemImage = MainActivity.imgid[+position];
 
                 if (isLeftClicked) {
                     leftHoroscopeTextView.setText(slecteditemText);
@@ -142,24 +161,36 @@ public class Compitability extends AppCompatActivity {
         compatTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MyApp", genderLeftImageView+"");
-
-                //TODO: defineText is configured in a way that first key word comes from female plus the male zodiak type
-                //it may help us to sort the objects in Json array using same keyword system in objects: 144 textTypes...
-                //we are going to send defineText into the new intent??? in which Json array will be acquired
-
-                if (isFemale){
-                    String defineText = (String) leftHoroscopeTextView.getText() + rightHoroscopeTextView.getText();
-                    //Toast.makeText(getApplicationContext(), defineText, Toast.LENGTH_SHORT).show();
+                if (interstitial.isLoaded()) {
+                    interstitial.show();
+                } else {
+                    Log.d(TAG, "The interstitial wasn't loaded yet.");
+                    onViewCompatButtonClick();
                 }
-                else {
-                    String defineText = (String) rightHoroscopeTextView.getText() + leftHoroscopeTextView.getText();
-                    //Toast.makeText(getApplicationContext(), defineText, Toast.LENGTH_SHORT).show();
-                }
+            }
+        });
 
-                if(isLeftClicked){
-                    leftLayout.setScaleX((float) ((float) 1 / 1.2));
-                    leftLayout.setScaleY((float) ((float) 1 / 1.2));
+    }
+
+    private void onViewCompatButtonClick() {
+        Log.d("MyApp", genderLeftImageView+"");
+
+        //TODO: defineText is configured in a way that first key word comes from female plus the male zodiak type
+        //it may help us to sort the objects in Json array using same keyword system in objects: 144 textTypes...
+        //we are going to send defineText into the new intent??? in which Json array will be acquired
+
+        if (isFemale){
+            String defineText = (String) leftHoroscopeTextView.getText() + rightHoroscopeTextView.getText();
+            //Toast.makeText(getApplicationContext(), defineText, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String defineText = (String) rightHoroscopeTextView.getText() + leftHoroscopeTextView.getText();
+            //Toast.makeText(getApplicationContext(), defineText, Toast.LENGTH_SHORT).show();
+        }
+
+        if(isLeftClicked){
+            leftLayout.setScaleX((float) ((float) 1 / 1.2));
+            leftLayout.setScaleY((float) ((float) 1 / 1.2));
 
 //                    final Handler handler = new Handler();
 //                    handler.postDelayed(new Runnable() {
@@ -169,27 +200,29 @@ public class Compitability extends AppCompatActivity {
 //                            rightHoroscopeImageView.setAlpha((float) 1);
 //                        }
 //                    }, 1500);
-                }
-                else {
-                    rightLayout.setScaleX((float) ((float) 1 / 1.2));
-                    rightLayout.setScaleY((float) ((float) 1 / 1.2));
+        }
+        else {
+            rightLayout.setScaleX((float) ((float) 1 / 1.2));
+            rightLayout.setScaleY((float) ((float) 1 / 1.2));
 
 //                    leftHoroscopeImageView.setAlpha((float) 1);
-                }
+        }
 
-                Intent intent = new Intent(Compitability.this, CompAbout.class);
+        Intent intent = new Intent(CompChooseActivity.this, CompAboutActivity.class);
 
-                intent.putExtra("leftImPos",leftImagePos)
-                        .putExtra("rightImPos",rightImagePos)
-                        .putExtra("leftGenIm",(Integer) genderLeftImageView.getTag())
-                        .putExtra("leftText",leftHoroscopeTextView.getText())
-                        .putExtra("rightText",rightHoroscopeTextView.getText());
+        intent.putExtra("leftImPos",leftImagePos)
+                .putExtra("rightImPos",rightImagePos)
+                .putExtra("leftGenIm",(Integer) genderLeftImageView.getTag())
+                .putExtra("leftText",leftHoroscopeTextView.getText())
+                .putExtra("rightText",rightHoroscopeTextView.getText());
 
-                startActivity(intent);
-                finish();
-            }
-        });
+        startActivity(intent);
+        finish();
+    }
 
+    private void requestNewInterstitial() {
+        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        interstitial.loadAd(adRequest1);
     }
 
     private void onRightLayoutClick() {
@@ -205,7 +238,7 @@ public class Compitability extends AppCompatActivity {
             rightLayout.setScaleY((float) 1.2);
 
             rightHoroscopeImageView.setAlpha((float) 1);
-            leftHoroscopeImageView.setAlpha((float) 0.7);
+            leftHoroscopeImageView.setAlpha((float) 0.5);
 
             leftLayout.setScaleX((float) ((float) 1 / 1.2));
             leftLayout.setScaleY((float) ((float) 1 / 1.2));
@@ -224,16 +257,16 @@ public class Compitability extends AppCompatActivity {
             leftLayout.setScaleX((float) 1.2);
             leftLayout.setScaleY((float) 1.2);
 
-            rightHoroscopeImageView.setAlpha((float) 0.7);
+            rightHoroscopeImageView.setAlpha((float) 0.5);
             leftHoroscopeImageView.setAlpha((float) 1);
 
             rightLayout.setScaleX((float) ((float) 1 / 1.2));
             rightLayout.setScaleY((float) ((float) 1 / 1.2));
-        Toast.makeText(getApplicationContext(), rightLayout.getScaleX()+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), rightLayout.getScaleX()+"", Toast.LENGTH_SHORT).show();
     }
 
 //    public int pxToDp(int px) {
-//        DisplayMetrics displayMetrics = Compitability.this.getResources().getDisplayMetrics();
+//        DisplayMetrics displayMetrics = CompChooseActivity.this.getResources().getDisplayMetrics();
 //        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 //        return dp;
 //    }

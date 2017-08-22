@@ -1,16 +1,21 @@
-package kz.sekeww.www.kundeliktizhuldyzzhoramaly;
+package kz.sekeww.www.kundeliktizhuldyzzhoramaly.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,13 +29,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Arrays;
 
-import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.Details.LOG_TAG;
-import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.imgid;
-import static kz.sekeww.www.kundeliktizhuldyzzhoramaly.MainActivity.itemname;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.AlertDialogFragment;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.Compatibility;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 
-public class CompAbout extends AppCompatActivity {
+public class CompAboutActivity extends AppCompatActivity {
+
+    private static final String TAG = CompAboutActivity.class.getSimpleName();
 
     public int leftImagePos;
     public int rightImagePos;
@@ -63,7 +74,7 @@ public class CompAbout extends AppCompatActivity {
     private int zodiakChildren;
     private String zodiakChildrenDesc;
 
-    private TextView plusSign;
+    private TextView mPlusSignTextView;
     private TextView textViewMarriage;
     private TextView textViewMarriageDesc;
     private TextView textViewLuck;
@@ -74,6 +85,12 @@ public class CompAbout extends AppCompatActivity {
     private TextView textViewWealthDesc;
     private TextView textViewChildren;
     private TextView textViewChildrenDesc;
+
+    private Compatibility mCompatibility;
+    private int mIndexCompat = 0;
+
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +112,7 @@ public class CompAbout extends AppCompatActivity {
         leftHoroscopeTextView = (TextView) findViewById(R.id.leftHoroscopeTextView);
         rightHoroscopeTextView = (TextView) findViewById(R.id.rightHoroscopeTextView);
 
-        plusSign = (TextView) findViewById(R.id.plusSign);
+        mPlusSignTextView = (TextView) findViewById(R.id.plusSign);
         textViewMarriage = (TextView) findViewById(R.id.textViewMarriage);
         textViewMarriageDesc = (TextView) findViewById(R.id.textViewMarriageDesc);
         textViewLuck = (TextView) findViewById(R.id.textViewLuck);
@@ -121,10 +138,10 @@ public class CompAbout extends AppCompatActivity {
 
         //получаем строку и формируем имя ресурса
         //Toast.makeText(getApplicationContext(), intent.getIntExtra("leftImPos",0)+"isZERO", Toast.LENGTH_SHORT).show();
-        leftImagePos = imgid[+intent.getIntExtra("leftImPos",0)];
+        leftImagePos = MainActivity.imgid[+intent.getIntExtra("leftImPos",0)];
         leftHoroscopeImageView.setImageResource(leftImagePos);
 
-        rightImagePos = imgid[+intent.getIntExtra("rightImPos",0)];
+        rightImagePos = MainActivity.imgid[+intent.getIntExtra("rightImPos",0)];
         rightHoroscopeImageView.setImageResource(rightImagePos);
 
         leftLayout.setScaleX((float) 0.833333);
@@ -136,17 +153,17 @@ public class CompAbout extends AppCompatActivity {
         rightHoroscopeTextView.setText(intent.getStringExtra("rightText"));
 
         if (isLeftImgFemale){
-            dataTableName = "compatibility" + Arrays.asList(itemname).indexOf(leftHoroscopeTextView.getText());
-            resname = Arrays.asList(itemname).indexOf(rightHoroscopeTextView.getText());
+            dataTableName = "compatibility" + Arrays.asList(MainActivity.itemname).indexOf(leftHoroscopeTextView.getText());
+            resname = Arrays.asList(MainActivity.itemname).indexOf(rightHoroscopeTextView.getText());
 
         } else {
-            dataTableName = "compatibility" + Arrays.asList(itemname).indexOf(rightHoroscopeTextView.getText());
-            resname = Arrays.asList(itemname).indexOf(leftHoroscopeTextView.getText());
+            dataTableName = "compatibility" + Arrays.asList(MainActivity.itemname).indexOf(rightHoroscopeTextView.getText());
+            resname = Arrays.asList(MainActivity.itemname).indexOf(leftHoroscopeTextView.getText());
         }
-        Log.d("my_log","My array number is: !!! " + Arrays.asList(itemname).indexOf(rightHoroscopeTextView.getText()) + "\n resname is: " + resname);
+        Log.d("my_log","My array number is: !!! " + Arrays.asList(MainActivity.itemname).indexOf(rightHoroscopeTextView.getText()) + "\n resname is: " + resname);
 
-        requestData(dataTableName,resname);
-
+        //requestData(dataTableName,resname);
+        getCompatibility(dataTableName);
     }
 
     private void requestData(String dataTableName, final int resName) {
@@ -174,10 +191,10 @@ public class CompAbout extends AppCompatActivity {
                         zodiakChildrenDesc = zodiakObject.getString("children_desc");
 
 
-                        Log.d(LOG_TAG,"zodiak object is "+zodiakPercentage);
+                        Log.d(DetailsActivity.LOG_TAG,"zodiak object is "+zodiakPercentage);
 //                        Log.d(LOG_TAG,"zodiak name is "+zodiakName);
 //                        tabLayout.setupWithViewPager(viewPager);
-                        setupTextView();
+//                        setupTextView();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -208,15 +225,127 @@ public class CompAbout extends AppCompatActivity {
 
     }
 
-    private void setupTextView() {
-        plusSign.setText(zodiakPercentage + "%");
-        textViewMarriage.setText("Тұрсмыстағы бақыт: " + zodiakMarriage);
-        textViewMarriageDesc.setText(zodiakMarriageDesc);
+    private void getCompatibility(String dataTableName) {
+        if (isNetworkAvailable()) {
+            //toggleRefresh();
+
+            String url = "http://gregarious.kz/index.php/main/get_json_" + dataTableName;
+            OkHttpClient client = new OkHttpClient();
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(url)
+                    .build();
+
+            Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //toggleRefresh();
+                        }
+                    });
+                    alertUserAboutError();
+                }
+
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //toggleRefresh();
+                        }
+                    });
+
+                    try {
+                        String jsonData = response.body().string();
+                        Log.v(TAG, jsonData);
+                        if (response.isSuccessful()) {
+                            mCompatibility = getCompatDetails(jsonData);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateDisplay();
+                                }
+                            });
+                        } else {
+                            alertUserAboutError();
+                        }
+                    }
+                    catch (IOException e) {
+                        Log.e(TAG, "Exception caught: ", e);
+                    }
+                    catch (JSONException e) {
+                        Log.e(TAG, "Exception caught: ", e);
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.network_unavailable , Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateDisplay() {
+        mPlusSignTextView.setText(mCompatibility.getPercentage() + "%");
+
+        textViewMarriage.setText(mCompatibility.getFormattedMarriage());
+        textViewLuck.setText(mCompatibility.getFormattedLuck());
+        textViewChildren.setText(mCompatibility.getFormattedChildren());
+        textViewSexual.setText(mCompatibility.getFormattedSexual());
+        textViewWealth.setText(mCompatibility.getFormattedWealth());
+
+
+        textViewMarriageDesc.setText(mCompatibility.getMarriageDesc());
+        textViewLuckDesc.setText(mCompatibility.getLuckDesc());
+        textViewSexualDesc.setText(mCompatibility.getSexualDesc());
+        textViewWealthDesc.setText(mCompatibility.getWealthDesc());
+        textViewChildrenDesc.setText(mCompatibility.getChildrenDesc());
+    }
+
+    private Compatibility getCompatDetails(String jsonData) throws JSONException {
+        JSONArray zodiakArray = new JSONArray(jsonData);
+        JSONObject zodiakObject = zodiakArray.getJSONObject(resname);
+
+        Log.d(TAG, "oject or array?: " + zodiakArray);
+        Log.d(TAG, "oject or array?: " + zodiakObject);
+
+        Compatibility compatibility = new Compatibility();
+
+        compatibility.setPercentage(zodiakObject.getInt("percentage"));
+        compatibility.setMarriage(zodiakObject.getInt("marriage"));
+        compatibility.setMarriageDesc(zodiakObject.getString("marriage_desc"));
+        compatibility.setLuck(zodiakObject.getInt("luck"));
+        compatibility.setLuckDesc(zodiakObject.getString("luck_desc"));
+        compatibility.setSexual(zodiakObject.getInt("sexual"));
+        compatibility.setSexualDesc(zodiakObject.getString("sexual_desc"));
+        compatibility.setChildren(zodiakObject.getInt("children"));
+        compatibility.setChildrenDesc(zodiakObject.getString("children_desc"));
+        compatibility.setWealth(zodiakObject.getInt("wealth"));
+        compatibility.setWealthDesc(zodiakObject.getString("wealth_desc"));
+
+        return compatibility;
+    }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
+    }
+
+    private void alertUserAboutError() {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(), "error_dialog");
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, Compitability.class));
+        startActivity(new Intent(this, CompChooseActivity.class));
         finish();
     }
 }

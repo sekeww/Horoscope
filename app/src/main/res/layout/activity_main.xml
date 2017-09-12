@@ -40,6 +40,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/religion_explanation"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

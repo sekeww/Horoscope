@@ -12,13 +12,14 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 
 /**
  * Created by Askhat on 4/12/2016.
  */
-public class Weekly extends Fragment {
+public class Monthly extends Fragment {
 
     private static final String ARG_zNAME = "zname";
     private static final String ARG_zDESC_WEEK = "zdescWeek";
@@ -30,15 +31,15 @@ public class Weekly extends Fragment {
     private String zname;
     private String zodiakDescriptionWeek;
 
-    public Weekly() {
+    public Monthly() {
         // Required empty public constructor
     }
 
-    public static Weekly newInstance(String zname, String zodiakDescriptionToday) {
+    public static Monthly newInstance(String zname, String zodiakDescriptionToday) {
 
         Log.d("my_log_daily_instance","zodiak name is "+zname);
 
-        Weekly fragment = new Weekly();
+        Monthly fragment = new Monthly();
         Bundle args = new Bundle();
         args.putString(ARG_zNAME, zname);
         args.putString(ARG_zDESC_WEEK, zodiakDescriptionToday);
@@ -78,49 +79,54 @@ public class Weekly extends Fragment {
         Log.d("my_log_daily_ocview","zodiak name is "+zname);
 
         Calendar c = Calendar.getInstance();
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+//        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+//
+//        if (Calendar.MONDAY == dayOfWeek) {
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.TUESDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-1);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.WEDNESDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-2);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.THURSDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-3);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.FRIDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-4);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.SATURDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-5);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        } else if (Calendar.SUNDAY == dayOfWeek) {
+//            c.add(Calendar.DAY_OF_YEAR,-6);
+//            beginOfWeek = c.getTime();
+//            c.add(Calendar.DAY_OF_YEAR,6);
+//            endOfWeek = c.getTime();
+//        }
+//
+//        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+//        String fdBegin = df.format(beginOfWeek);
+//        String fdEnd = df.format(endOfWeek);
+//
+//        dateTextView.setText(fdBegin + " - " + fdEnd);
 
-        if (Calendar.MONDAY == dayOfWeek) {
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.TUESDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-1);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.WEDNESDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-2);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.THURSDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-3);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.FRIDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-4);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.SATURDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-5);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        } else if (Calendar.SUNDAY == dayOfWeek) {
-            c.add(Calendar.DAY_OF_YEAR,-6);
-            beginOfWeek = c.getTime();
-            c.add(Calendar.DAY_OF_YEAR,6);
-            endOfWeek = c.getTime();
-        }
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.getDefault());
+        String month_name = month_date.format(c.getTime());
 
-        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-        String fdBegin = df.format(beginOfWeek);
-        String fdEnd = df.format(endOfWeek);
-
-        dateTextView.setText(fdBegin + " - " + fdEnd);
+        dateTextView.setText(month_name);
         titleTextView.setText(zname);
         descriptionTextView.setText(zodiakDescriptionWeek);
         return v;

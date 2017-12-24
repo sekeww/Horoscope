@@ -221,7 +221,7 @@ public class CompChooseActivity extends AppCompatActivity {
     }
 
     private void requestNewInterstitial() {
-        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         interstitial.loadAd(adRequest1);
     }
 

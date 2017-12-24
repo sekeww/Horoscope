@@ -3,7 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Баптау</string>
-    <string name="app_version">© 2017  Версия 7.0</string>
+    <string name="app_version">© 2017  Версия 1.8.0</string>
 
 
     <string name="ads_app_id">ca-app-pub-3641402840999818~2478934289</string>
@@ -14,7 +14,7 @@
     <string name="drawer_item_info2">уақыт аралығында жаңарып тұрады.</string>
     <string name="drawer_item_help">Көмек</string>
     <string name="drawer_item_home">Зодиак белгілері</string>
-    <string name="drawer_item_compatibility">Жарасымдылық (Тамызда)</string>
+    <string name="drawer_item_compatibility">Жарасымдылық</string>
     <string name="drawer_item_rate">Бізді бағалаңыз</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -27,7 +27,7 @@
     <string name="marriage_string">1.Тұрсмыстағы бақыт: %1$s</string>
     <string name="info">Жұлдыз Жорамал күнделікті түрде таңғы 8:00 - 12:00 уақыт аралығында жаңарып тұрады.</string>
 
-    <string name="religion_explanation">Шейх аль-Фавзан сказал:\n\n
+    <string name="religion_explanation">Для верующих людей!\nШейх аль-Фавзан сказал:\n\n
 
 «Человек, который читает гороскоп, где написано о знаках зодиака, и, зная свой знак, прочитал о нем, он как будто спросил прорицателя. И по этой причине от него не будет принята молитва в течение сорока дней. А если он еще и поверит тому, что написано в гороскопе, то тем самым проявит неверие (куфр) в отношении того, что было ниспослано Мухаммаду (ﷺ)».
 

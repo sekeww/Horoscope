@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
             "Тауешкі",
             "Балықтар",
             "Суқұйғыш"
+
+
     };
 
     public static Integer[] imgid={
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.apic10b,
             R.drawable.apic12b,
             R.drawable.apic11b
+
     };
 
 

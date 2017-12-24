@@ -1,5 +1,6 @@
 package kz.sekeww.www.kundeliktizhuldyzzhoramaly.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
@@ -58,7 +62,7 @@ public class CompAboutActivity extends AppCompatActivity {
     private boolean isLeftImgFemale = false;
     private String dataTableName;
     private int resname;
-    private LinearLayout sample_root;
+    private RelativeLayout sample_root;
 
     private int zodiakId;
     private int zodiakPercentage;
@@ -96,9 +100,18 @@ public class CompAboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comp_about);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("Жарасымдылық");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        mAdView.loadAd(adRequest);
+
         Intent intent = getIntent();
 
-        sample_root = (LinearLayout) findViewById(R.id.sample_root);
+        sample_root = (RelativeLayout) findViewById(R.id.sample_root);
 
         leftLayout = (RelativeLayout) findViewById(R.id.leftLayout);
         rightLayout = (RelativeLayout) findViewById(R.id.rightLayout);
@@ -348,4 +361,17 @@ public class CompAboutActivity extends AppCompatActivity {
         startActivity(new Intent(this, CompChooseActivity.class));
         finish();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //Toast.makeText(getApplicationContext(),"Back button clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, CompChooseActivity.class));
+                finish();
+                break;
+        }
+        return true;
+    }
+
 }

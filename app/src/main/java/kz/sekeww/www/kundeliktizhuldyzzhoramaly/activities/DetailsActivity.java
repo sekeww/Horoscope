@@ -33,7 +33,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ import java.util.List;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.R;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Daily;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Tomorrow;
-import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Weekly;
+import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Monthly;
 import kz.sekeww.www.kundeliktizhuldyzzhoramaly.fragments.Year;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -213,7 +212,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         adapter.addFragment(new Daily().newInstance(zodiakName,zodiakDescriptionToday), "Бүгінгі");
         adapter.addFragment(new Tomorrow().newInstance(zodiakName,zodiakDescriptionTomorrow), "Ертеңгі");
-        adapter.addFragment(new Weekly().newInstance(zodiakName,zodiakDescriptionWeek), "Апталық");
+        adapter.addFragment(new Monthly().newInstance(zodiakName,zodiakDescriptionWeek), "Айлық");
         adapter.addFragment(new Year().newInstance(zodiakName,zodiakDescriptionYear), "Жылдық");
         viewPager.setAdapter(adapter);
 

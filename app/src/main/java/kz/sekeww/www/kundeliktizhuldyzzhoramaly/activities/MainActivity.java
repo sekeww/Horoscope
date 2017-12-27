@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestNewInterstitial() {
-        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").addTestDevice("CB7C73537FF9BDF22D9D764D52779D44").build();
         interstitial.loadAd(adRequest1);
     }
 

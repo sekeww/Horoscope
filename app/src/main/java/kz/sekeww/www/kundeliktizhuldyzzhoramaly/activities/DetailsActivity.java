@@ -10,8 +10,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +55,6 @@ public class DetailsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private FloatingActionButton mFloatingActionButton;
     public int resName;
     private String zodiakName;
     private String zodiakDescriptionToday;
@@ -64,6 +65,8 @@ public class DetailsActivity extends AppCompatActivity {
     private int mPage;
 
     private RelativeLayout relativeLayout;
+    private ShareActionProvider mShareActionProvider;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
         AdView mAdView = (AdView) findViewById(R.id.adView);
-        final AdRequest adRequest = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").build();
+        final AdRequest adRequest = new AdRequest.Builder().addTestDevice("191E77D0E7000A3554E4F1A21D2455D0").addTestDevice("CB7C73537FF9BDF22D9D764D52779D44").build();
         mAdView.loadAd(adRequest);
 
 
@@ -107,14 +110,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onFABClick();
-            }
-        });
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
@@ -192,20 +187,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
-    private void onFABClick() {
-
-        View view = adapter.getItem(mPage).getView();
-        TextView text = (TextView) view.findViewById(R.id.textDesc);
-        TextView date = (TextView) view.findViewById(R.id.dateTextView);
-
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, text.getText() + "\n\n" + date.getText() + "\n@" +
-                getString(R.string.app_name) + "\n\n" + "https://play.google.com/store/apps/details?id=kz.sekeww.www.kundeliktizhuldyzzhoramaly");
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         Log.d("my_log_inviewPager","zodiak name is "+zodiakName);
@@ -215,7 +196,7 @@ public class DetailsActivity extends AppCompatActivity {
         adapter.addFragment(new Monthly().newInstance(zodiakName,zodiakDescriptionWeek), "Айлық");
         adapter.addFragment(new Year().newInstance(zodiakName,zodiakDescriptionYear), "Жылдық");
         viewPager.setAdapter(adapter);
-
+        mShareActionProvider.setShareIntent(createShareIntent());
     }
 
 
@@ -254,11 +235,36 @@ public class DetailsActivity extends AppCompatActivity {
         interstitial.loadAd(adRequest1);
     }
 
+    private Intent createShareIntent() {
+            View view = adapter.getItem(mPage).getView();
+            TextView text = view.findViewById(R.id.textDesc);
+            TextView date = view.findViewById(R.id.dateTextView);
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text.getText() + "\n\n" + date.getText() + "\n@" +
+                    getString(R.string.app_name) + "\n\n" + "https://play.google.com/store/apps/details?id=kz.sekeww.www.kundeliktizhuldyzzhoramaly");
+            sendIntent.setType("text/plain");
+            return Intent.createChooser(sendIntent, "Share menu");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        // Return true to display menu
         return true;
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -273,7 +279,8 @@ public class DetailsActivity extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

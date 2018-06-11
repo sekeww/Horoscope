@@ -93,7 +93,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Aries"
+                    android:text="----"
                     android:textSize="14sp"
                     android:textColor="@android:color/black"
                     android:id="@+id/leftHoroscopeTextView"
@@ -148,7 +148,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Aries"
+                    android:text="----"
                     android:textSize="14sp"
                     android:textColor="@android:color/black"
                     android:id="@+id/rightHoroscopeTextView"
@@ -171,7 +171,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewMarriage"
-                android:text="1.Header one: Jaman"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -179,13 +178,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewMarriageDesc"
-                android:text="Text text text. Text text text. Text text text. Text text text. "
                 android:layout_marginLeft="16dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewLuck"
-                android:text="2.Header two: Jaksy"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -193,13 +190,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewLuckDesc"
-                android:text="Text text text. Text text text. Text text text. Text text text. "
                 android:layout_marginLeft="16dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewSexual"
-                android:text="3.Header three: Jaman"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -207,13 +202,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewSexualDesc"
-                android:text="Text text text. Text text text. Text text text. Text text text. "
                 android:layout_marginLeft="16dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewWealth"
-                android:text="4.Header four: Jaman"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -221,13 +214,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewWealthDesc"
-                android:text="Text text text. Text text text. Text text text. Text text text. "
                 android:layout_marginLeft="16dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewChildren"
-                android:text="5.Header five: Jaman"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -235,7 +226,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewChildrenDesc"
-                android:text="Text text text. Text text text. Text text text. Text text text. "
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="6dp"/>
         </LinearLayout>

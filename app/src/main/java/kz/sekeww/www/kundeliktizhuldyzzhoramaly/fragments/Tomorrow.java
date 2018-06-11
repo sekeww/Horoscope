@@ -117,7 +117,7 @@ public class Tomorrow extends Fragment {
 
         Log.d("my_log_daily_ocview","zodiak name is "+zname);
 
-        titleTextView.setText(zname);
+//        titleTextView.setText(zname);
         descriptionTextView.setText(zodiakDescriptionToday);
         dateTextView.setText(formattedDate);
 

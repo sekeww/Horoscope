@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -55,6 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private TextView mTitleTextView;
     public int resName;
     private String zodiakName;
     private String zodiakDescriptionToday;
@@ -110,6 +112,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        mTitleTextView = findViewById(R.id.textTitle);
+        mTitleTextView.setVisibility(View.INVISIBLE);
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
@@ -121,14 +125,13 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 mPage = position;
-                if (position == 1 && k==0){
-                    k = k+1;
-//                    if (interstitial.isLoaded()) {
-//                        interstitial.show();
-//                    }
+                if (position == 3){
+                    mTitleTextView.setVisibility(View.GONE);
+                }
+                else {
+                    mTitleTextView.setVisibility(View.VISIBLE);
                 }
             }
-
             // optional
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -177,9 +180,9 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Log.d(LOG_TAG, error.getMessage());
-//                Toast.makeText(getApplicationContext(),
-//                        "No internet connection!!!", Toast.LENGTH_LONG)
-//                        .show();
+                Toast.makeText(getApplicationContext(),
+                        "No internet connection!!!", Toast.LENGTH_LONG)
+                        .show();
             }
         });
 
@@ -190,13 +193,24 @@ public class DetailsActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         Log.d("my_log_inviewPager","zodiak name is "+zodiakName);
-
+        mTitleTextView.setVisibility(View.VISIBLE);
+        mTitleTextView.setText("--" + zodiakName + "--");
         adapter.addFragment(new Daily().newInstance(zodiakName,zodiakDescriptionToday), "Бүгінгі");
         adapter.addFragment(new Tomorrow().newInstance(zodiakName,zodiakDescriptionTomorrow), "Ертеңгі");
         adapter.addFragment(new Monthly().newInstance(zodiakName,zodiakDescriptionWeek), "Айлық");
         adapter.addFragment(new Year().newInstance(zodiakName,zodiakDescriptionYear), "Жылдық");
         viewPager.setAdapter(adapter);
-        mShareActionProvider.setShareIntent(createShareIntent());
+
+        if (adapter.getItem(mPage).getView()!=null) {
+            mShareActionProvider.setShareIntent(createShareIntent());
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(viewPager, "Your ViewPage is empty, please check the Internet!", Snackbar.LENGTH_INDEFINITE);
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+        }
     }
 
 
@@ -230,13 +244,9 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void requestNewInterstitial() {
-        AdRequest adRequest1 = new AdRequest.Builder().addTestDevice("27B1B3B72C8B485FEA61CFA654562346").addTestDevice("992DA0E660174CC5796809D2A5F04696").build();
-        interstitial.loadAd(adRequest1);
-    }
-
     private Intent createShareIntent() {
             View view = adapter.getItem(mPage).getView();
+
             TextView text = view.findViewById(R.id.textDesc);
             TextView date = view.findViewById(R.id.dateTextView);
 
@@ -254,17 +264,11 @@ public class DetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_share, menu);
         // Locate MenuItem with ShareActionProvider
         MenuItem item = menu.findItem(R.id.menu_item_share);
-
+        MenuItem item_compat = menu.findItem(R.id.menu_item_compat);
         // Fetch and store ShareActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         // Return true to display menu
         return true;
-    }
-
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
     }
 
     @Override
@@ -279,6 +283,12 @@ public class DetailsActivity extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.menu_item_compat:
+                Intent intent = new Intent();
+                intent.setClass(DetailsActivity.this, CompChooseActivity.class);
+                startActivity(intent);
+                item.setEnabled(false);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

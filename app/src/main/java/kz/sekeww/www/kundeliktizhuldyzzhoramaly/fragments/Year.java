@@ -69,6 +69,7 @@ public class Year extends Fragment {
         String formattedDate = df.format(c.getTime());
 
         TextView titleTextView = (TextView) v.findViewById(R.id.textTitle);
+        titleTextView.setVisibility(View.VISIBLE);
         TextView descriptionTextView = (TextView) v.findViewById(R.id.textDesc);
         TextView dateTextView = (TextView) v.findViewById(R.id.dateTextView);
 
@@ -77,7 +78,7 @@ public class Year extends Fragment {
 
         Log.d("my_log_daily_ocview","zodiak name is "+zname);
 
-        titleTextView.setText(zname);
+        titleTextView.setText("--" + zname + "--");
         descriptionTextView.setText(zodiakDescriptionYear);
         dateTextView.setText(formattedDate + " жылы");
 

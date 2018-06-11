@@ -184,64 +184,6 @@ public class CompAboutActivity extends AppCompatActivity {
         getCompatibility(dataTableName);
     }
 
-    private void requestData(String dataTableName, final int resName) {
-        String url = "http://gregarious.kz/index.php/main/get_json_"+dataTableName;
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.d("my_log",response.toString());
-                if(response.length()>0){
-                    try {
-                        JSONObject zodiakObject = response.getJSONObject(resName);
-                        zodiakId = zodiakObject.getInt("id");
-                        zodiakPercentage = zodiakObject.getInt("percentage");
-                        zodiakMarriage = zodiakObject.getInt("marriage");
-                        zodiakMarriageDesc = zodiakObject.getString("marriage_desc");
-                        zodiakLuck = zodiakObject.getInt("luck");
-                        zodiakLuckDesc = zodiakObject.getString("luck_desc");
-                        zodiakSexual = zodiakObject.getInt("sexual");
-                        zodiakSexualDesc = zodiakObject.getString("sexual_desc");
-                        zodiakWealth = zodiakObject.getInt("wealth");
-                        zodiakWealthDesc = zodiakObject.getString("wealth_desc");
-                        zodiakChildren = zodiakObject.getInt("children");
-                        zodiakChildrenDesc = zodiakObject.getString("children_desc");
-
-
-                        Log.d(DetailsActivity.LOG_TAG,"zodiak object is "+zodiakPercentage);
-//                        Log.d(LOG_TAG,"zodiak name is "+zodiakName);
-//                        tabLayout.setupWithViewPager(viewPager);
-//                        setupTextView();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    Snackbar snackbar = Snackbar
-                            .make(sample_root, "Internet parsing problems!", Snackbar.LENGTH_INDEFINITE);
-
-// Changing action button text color
-                    View sbView = snackbar.getView();
-                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setTextColor(Color.YELLOW);
-                    snackbar.show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Log.d(LOG_TAG, error.getMessage());
-//                Toast.makeText(getApplicationContext(),
-//                        "No internet connection!!!", Toast.LENGTH_LONG)
-//                        .show();
-            }
-        });
-
-        queue.add(request);
-
-    }
 
     private void getCompatibility(String dataTableName) {
         if (isNetworkAvailable()) {
@@ -318,6 +260,8 @@ public class CompAboutActivity extends AppCompatActivity {
         textViewSexualDesc.setText(mCompatibility.getSexualDesc());
         textViewWealthDesc.setText(mCompatibility.getWealthDesc());
         textViewChildrenDesc.setText(mCompatibility.getChildrenDesc());
+
+        mShareActionProvider.setShareIntent(createShareIntent());
     }
 
     private Compatibility getCompatDetails(String jsonData) throws JSONException {
@@ -382,6 +326,10 @@ public class CompAboutActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_share, menu);
         // Locate MenuItem with ShareActionProvider
         MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        MenuItem item_compat = menu.findItem(R.id.menu_item_compat);
+        item_compat.setVisible(false);
+        item_compat.setEnabled(false);
 
         // Fetch and store ShareActionProvider
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
@@ -389,10 +337,39 @@ public class CompAboutActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
+    private String textCreator(){
+        String string = " ";
+        if (isLeftImgFemale) {
+            string = leftHoroscopeTextView.getText() + "(Ә)" + " - " + rightHoroscopeTextView.getText() + "(Ұ)";
         }
+        else {
+            string = leftHoroscopeTextView.getText() + "(Ұ)" + " - " + rightHoroscopeTextView.getText() + "(Ә)";
+        }
+        return string;
+    }
+
+    private Intent createShareIntent() {
+
+        TextView marriage = findViewById(R.id.textViewMarriage);
+        TextView luck = findViewById(R.id.textViewLuck);
+        TextView sexual = findViewById(R.id.textViewSexual);
+        TextView wealth = findViewById(R.id.textViewWealth);
+        TextView children = findViewById(R.id.textViewChildren);
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                textCreator()+ "\n"
+                        + "Жарасымдылық" + " " + mPlusSignTextView.getText() + "\n\n"
+                        + marriage.getText() + "\n"
+                        + luck.getText() + "\n"
+                        + sexual.getText() + "\n"
+                        + wealth.getText() + "\n"
+                        + children.getText() +"\n\n@"
+                        + getString(R.string.app_name) + "\n\n"
+                        + "https://play.google.com/store/apps/details?id=kz.sekeww.www.kundeliktizhuldyzzhoramaly");
+        sendIntent.setType("text/plain");
+        return Intent.createChooser(sendIntent, "Share menu");
     }
 
     @Override

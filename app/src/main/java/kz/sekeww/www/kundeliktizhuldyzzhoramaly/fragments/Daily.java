@@ -119,7 +119,7 @@ public class Daily extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         String formattedDate = df.format(c.getTime());
 
-        titleTextView.setText(zname);
+//        titleTextView.setText(zname);
         descriptionTextView.setText(zodiakDescriptionToday);
         dateTextView.setText(formattedDate);
 

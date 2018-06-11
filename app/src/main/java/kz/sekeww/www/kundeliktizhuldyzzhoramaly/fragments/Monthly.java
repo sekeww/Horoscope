@@ -127,7 +127,7 @@ public class Monthly extends Fragment {
         String month_name = month_date.format(c.getTime());
 
         dateTextView.setText(month_name);
-        titleTextView.setText(zname);
+//        titleTextView.setText(zname);
         descriptionTextView.setText(zodiakDescriptionWeek);
         return v;
     }

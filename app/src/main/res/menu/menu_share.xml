@@ -5,11 +5,14 @@
       tools:context=".activities.MainActivity">
 
     <item
+        android:id="@+id/menu_item_compat"
+        android:title="Жарасымдылық"
+        android:icon="@drawable/compat_selector"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/menu_item_share"
-        android:title="Share"
+        android:title="Бөлісу"
         app:actionProviderClass=
-            "android.support.v7.widget.ShareActionProvider"
-        app:showAsAction="always"/>
-
-
+            "android.support.v7.widget.ShareActionProvider"/>
 </menu>
